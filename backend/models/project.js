@@ -15,6 +15,12 @@ const projectSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    pages: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Page",
+      },
+    ],
   },
   { timestamps: true }
 );

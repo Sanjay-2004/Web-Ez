@@ -7,8 +7,7 @@ const pageSchema = new mongoose.Schema(
       required: true,
     },
     code: {
-      type: String,
-      default: "",
+      type: [],
     },
     project: {
       type: mongoose.Schema.Types.ObjectId,
