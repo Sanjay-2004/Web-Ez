@@ -1,10 +1,18 @@
 import React from 'react'
-import { Button } from './components/ui/button'
 import Home from './pages/Home'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Projects from './pages/Projects'
 
 const App = () => {
   return (
-    <Home />
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/projects" element={<Projects />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   )
 }
 

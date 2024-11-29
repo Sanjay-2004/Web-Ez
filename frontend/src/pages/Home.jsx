@@ -8,8 +8,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
   const [signupData, setSignupData] = useState({
     name: '',
     email: '',
@@ -35,14 +40,25 @@ const Home = () => {
     })
   }
 
-  const handleSignupSubmit = (e) => {
+  const handleSignupSubmit = async (e) => {
     e.preventDefault()
     console.log("Signup Data:", signupData)
-    setSignupData({
-      name: '',
-      email: '',
-      password: ''
-    })
+    try {
+      const URI = `${import.meta.env.VITE_BACKEND_URL}/api/auth/sign-up`
+      console.log("URI:", URI)
+      const res = await axios.post(URI, signupData)
+      const jwtToken = res.data.token;
+      console.log("JWT Token:", jwtToken)
+      localStorage.setItem("token", jwtToken);
+      navigate("/projects");
+      setSignupData({
+        name: '',
+        email: '',
+        password: ''
+      })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const handleLoginSubmit = (e) => {
@@ -57,7 +73,7 @@ const Home = () => {
   return (
     <>
       <div className='h-screen bg-gray-400 items-center'>
-        <div className='flex gap-3 pt-36  p-4 items-center'>
+        <div className='flex gap-3 pt-36 pl-10  p-4 items-center'>
           <div className="w-2/3">
             <h1 className='text-[10rem]'>WEB-EZ</h1>
             <p className='text-5xl mb-5'>No-Code Website Generator</p>

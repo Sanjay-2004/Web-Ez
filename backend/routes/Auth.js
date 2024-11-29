@@ -32,7 +32,14 @@ router.post("/sign-up", async (req, res) => {
       password: hashedPassword,
     }).save();
 
-    res.status(201).json({ message: "User created successfully" });
+    const token = sign({ id: email }, process.env.JWT_SECRET);
+    res.json({
+      token,
+      user: {
+        name,
+        email,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
