@@ -51,23 +51,23 @@ const Home = () => {
       console.log("JWT Token:", jwtToken)
       localStorage.setItem("token", jwtToken);
       navigate("/projects");
-      setSignupData({
-        name: '',
-        email: '',
-        password: ''
-      })
     } catch (error) {
       console.error(error)
     }
   }
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault()
     console.log("Login Data:", loginData)
-    setLoginData({
-      email: '',
-      password: ''
-    })
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/sign-in`, loginData)
+      const jwtToken = res.data.token;
+      localStorage.setItem("token", jwtToken);
+      console.log(res)
+      navigate("/projects");
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
