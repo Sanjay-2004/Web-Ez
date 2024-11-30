@@ -19,9 +19,9 @@
     "lucide-react": "^0.454.0",
     "react": "^18.3.1",
     "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.3.1",
     "react-rnd": "^10.4.13",
-    "react-dnd-html5-backend": "^16.0.1",
     "react-router-dom": "^7.0.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7"
