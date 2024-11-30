@@ -1,35 +1,39 @@
 import React from 'react';
 import { Rnd } from 'react-rnd';
 
-const CanvasComponent = ({ index, component, onClick, updateComponentPosition }) => {
+const CanvasComponent = ({ index, component, onClick, updateComponentPosition, updateComponentProperties }) => {
     const renderComponent = () => {
-        const textStyle = `w-full h-full ${component.properties.color ? `text-[${component.properties.color}]` : 'text-black'}`;
+        const textStyle = {
+            color: component.properties.color || 'black',
+            fontSize: `${component.properties.textSize}px`,
+        };
 
         switch (component.id) {
             case 'title':
-                return <h1 className={textStyle}>{component.properties.text}</h1>;
+                return <h1 style={textStyle}>{component.properties.text}</h1>;
             case 'heading':
-                return <h2 className={textStyle}>{component.properties.text}</h2>;
+                return <h2 style={textStyle}>{component.properties.text}</h2>;
             case 'paragraph':
-                return <p className={textStyle}>{component.properties.text}</p>;
+                return <p style={textStyle}>{component.properties.text}</p>;
             case 'button':
                 return (
-                    <button className={`w-full h-full py-2 px-4 bg-blue-500 text-white rounded shadow hover:bg-blue-600`}>
+                    <button
+                        style={{
+                            backgroundColor: component.properties.backgroundColor || 'blue',
+                            color: 'white',
+                            padding: '10px',
+                            borderRadius: '5px',
+                            fontSize: `${component.properties.textSize}px`,
+                        }}
+                    >
                         {component.properties.text}
                     </button>
                 );
             case 'card':
                 return (
-                    <div className="w-full h-full border border-gray-300 rounded-md shadow-sm bg-white">
-                        <div className="p-4">
-                            <h5 className={`text-lg font-semibold ${component.properties.titleColor ? `text-[${component.properties.titleColor}]` : 'text-gray-800'}`}>
-                                {component.properties.title}
-                            </h5>
-                            <p className="text-gray-600 mt-2">{component.properties.content}</p>
-                            <button className="mt-4 py-2 px-4 bg-blue-500 text-white rounded shadow hover:bg-blue-600">
-                                {component.properties.buttonText || 'Button'}
-                            </button>
-                        </div>
+                    <div className="card" style={textStyle}>
+                        <h5>{component.properties.title}</h5>
+                        <p>{component.properties.content}</p>
                     </div>
                 );
             default:
@@ -54,6 +58,6 @@ const CanvasComponent = ({ index, component, onClick, updateComponentPosition })
             <div className="w-full h-full">{renderComponent()}</div>
         </Rnd>
     );
-}
+};
 
 export default CanvasComponent;

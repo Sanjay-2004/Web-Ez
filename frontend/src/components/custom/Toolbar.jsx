@@ -1,74 +1,84 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 
-const Toolbar = ({ selectedComponentIndex, components, updateComponent, generateCode }) => {
-    const [properties, setProperties] = useState({ text: '', color: '#000', title: '', content: '' });
-
-    useEffect(() => {
-        if (selectedComponentIndex !== null && components[selectedComponentIndex]) {
-            setProperties(components[selectedComponentIndex].properties || {});
-        }
-    }, [selectedComponentIndex, components]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setProperties((prev) => ({ ...prev, [name]: value }));
-        updateComponent(selectedComponentIndex, { [name]: value });
-    };
+const Toolbar = ({
+    selectedComponentIndex,
+    components,
+    updateComponent,
+    handleColorChange,
+    handleTextSizeChange,
+    handleTextChange,
+    generateCode,
+}) => {
+    const selectedComponent = components[selectedComponentIndex];
+    console.log(selectedComponent);
 
     return (
-        <div className="w-52 p-4 border-l border-gray-200 bg-gray-50">
-            <h3 className="text-lg font-semibold mb-4">Toolbar</h3>
-            <div className="space-y-4">
+        <div className="w-64 p-4 bg-white border-l border-gray-300">
+            {selectedComponent ? (
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Text:</label>
-                    <input
-                        type="text"
-                        name="text"
-                        value={properties.text || ''}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Color:</label>
-                    <input
-                        type="color"
-                        name="color"
-                        value={properties.color || '#000'}
-                        onChange={handleChange}
-                        className="mt-1 w-12 h-8 p-1 border border-gray-300 rounded-md"
-                    />
-                </div>
-                {components[selectedComponentIndex]?.id === 'card' && (
-                    <>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Card Title:</label>
+                    <div className="mb-4">
+                        <h3 className="font-semibold">Edit Component</h3>
+
+                        {/* Editable Text */}
+                        <div className="mb-2">
+                            <label className="block text-sm">Text</label>
                             <input
                                 type="text"
-                                name="title"
-                                value={properties.title || ''}
-                                onChange={handleChange}
-                                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                                value={selectedComponent.properties.text}
+                                onChange={(e) => handleTextChange(e.target.value)}
+                                className="w-full p-2 border rounded"
                             />
                         </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Card Content:</label>
-                            <textarea
-                                name="content"
-                                value={properties.content || ''}
-                                onChange={handleChange}
-                                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+
+                        {/* Text Color */}
+                        <div className="mb-2">
+                            <label className="block text-sm">Text Color</label>
+                            <input
+                                type="color"
+                                value={selectedComponent.properties.color}
+                                onChange={(e) => handleColorChange(e.target.value, 'color')}
+                                className="w-full h-10 border rounded p-0"
+                                style={{ backgroundColor: selectedComponent.properties.color }}
                             />
                         </div>
-                    </>
-                )}
-                <button
-                    onClick={generateCode}
-                    className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                >
-                    Generate Code
-                </button>
-            </div>
+
+                        {/* Text Size */}
+                        <div className="mb-2">
+                            <label className="block text-sm">Text Size</label>
+                            <input
+                                type="number"
+                                value={selectedComponent.properties.textSize}
+                                onChange={(e) => handleTextSizeChange(e.target.value)}
+                                className="w-full p-2 border rounded"
+                            />
+                        </div>
+
+                        {/* Background Color */}
+                        {selectedComponent.id === 'button' && (
+                            <div className="mb-2">
+                                <label className="block text-sm">Background Color</label>
+                                <input
+                                    type="color"
+                                    value={selectedComponent.properties.backgroundColor || '#000000'}
+                                    onChange={(e) => handleColorChange(e.target.value, 'backgroundColor')}
+                                    className="w-full h-10 border rounded p-0"
+                                    style={{
+                                        backgroundColor: selectedComponent.properties.backgroundColor || '#000000',
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <button
+                        onClick={generateCode}
+                        className="mt-4 w-full bg-blue-500 text-white p-2 rounded"
+                    >
+                        Generate Code
+                    </button>
+                </div>
+            ) : (
+                <p>Select a component to edit</p>
+            )}
         </div>
     );
 };

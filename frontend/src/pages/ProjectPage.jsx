@@ -12,7 +12,7 @@ const ProjectPage = () => {
     const addComponentToCanvas = (component) => {
         setComponents((prev) => [
             ...prev,
-            { ...component, properties: { text: 'Edit me!', color: '#000' } },
+            { ...component, properties: { text: 'Edit me!', color: '#000', textSize: 16, backgroundColor: '#000' } },
         ]);
     };
 
@@ -36,10 +36,29 @@ const ProjectPage = () => {
         );
     };
 
+    const handleColorChange = (color, property) => {
+        if (selectedComponentIndex !== null) {
+            const updatedProperties = { [property]: color };
+            updateComponent(selectedComponentIndex, updatedProperties);
+        }
+    };
+
+    const handleTextSizeChange = (textSize) => {
+        if (selectedComponentIndex !== null) {
+            updateComponent(selectedComponentIndex, { textSize: parseInt(textSize, 10) });
+        }
+    };
+
+    const handleTextChange = (text) => {
+        if (selectedComponentIndex !== null) {
+            updateComponent(selectedComponentIndex, { text });
+        }
+    };
+
     const generateCode = () => {
         const code = components
             .map((comp) => {
-                const style = `style={{ color: '${comp.properties.color}', position: 'absolute', left: ${comp.position.x}px, top: ${comp.position.y}px, width: ${comp.width}px, height: ${comp.height}px }}`;
+                const style = `style={{ color: '${comp.properties.color}', fontSize: '${comp.properties.textSize}px', position: 'absolute', left: ${comp.position.x}px, top: ${comp.position.y}px, width: ${comp.width}px, height: ${comp.height}px }}`;
                 switch (comp.id) {
                     case 'title':
                         return `<h1 ${style}>${comp.properties.text}</h1>`;
@@ -67,12 +86,16 @@ const ProjectPage = () => {
                     components={components}
                     setSelectedComponentIndex={setSelectedComponentIndex}
                     addComponent={addComponentToCanvas}
-                    updateComponentPosition={updateComponentPosition} // Pass update function
+                    updateComponentPosition={updateComponentPosition}
+                    updateComponent={updateComponent}
                 />
                 <Toolbar
                     selectedComponentIndex={selectedComponentIndex}
                     components={components}
                     updateComponent={updateComponent}
+                    handleColorChange={handleColorChange}
+                    handleTextSizeChange={handleTextSizeChange}
+                    handleTextChange={handleTextChange}
                     generateCode={generateCode}
                 />
             </div>
