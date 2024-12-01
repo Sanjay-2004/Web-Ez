@@ -7,7 +7,7 @@ function Canvas({ components, setSelectedComponentIndex, addComponent, updateCom
         accept: 'component',
         drop: (item, monitor) => {
             const offset = monitor.getSourceClientOffset();
-            addComponent({ id: item.id, position: { x: offset.x, y: offset.y }, width: 150, height: 50 });
+            addComponent({ id: item.id, position: { x: offset.x, y: offset.y }, width: 700, height: 50 });
         }
     }));
 

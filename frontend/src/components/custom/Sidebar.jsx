@@ -13,7 +13,7 @@ const DraggableComponent = ({ component, addComponent }) => {
             ref={drag}
             className="m-2 p-3 border border-gray-300 rounded-md shadow-sm cursor-move hover:bg-gray-100"
             onClick={() =>
-                addComponent({ id: component.id, position: { x: 100, y: 100 }, width: 150, height: 50 })
+                addComponent({ id: component.id, position: { x: 100, y: 100 }, width: 700, height: 50 })
             }
         >
             {component.label}
