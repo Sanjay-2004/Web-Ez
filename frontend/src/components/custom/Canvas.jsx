@@ -2,12 +2,12 @@ import React from 'react';
 import { useDrop } from 'react-dnd';
 import CanvasComponent from './CanvasComponent';
 
-function Canvas({ components, setSelectedComponentIndex, addComponent, updateComponentPosition }) {
+function Canvas({ components, setSelectedComponentIndex, addComponent, updateComponentPosition, updateComponentSize }) {
     const [, drop] = useDrop(() => ({
         accept: 'component',
         drop: (item, monitor) => {
             const offset = monitor.getSourceClientOffset();
-            addComponent({ id: item.id, position: { x: offset.x, y: offset.y }, width: 700, height: 50 });
+            addComponent({ id: item.id, position: { x: offset.x, y: offset.y }, width: 400, height: 50 });
         }
     }));
 
@@ -22,7 +22,8 @@ function Canvas({ components, setSelectedComponentIndex, addComponent, updateCom
                     index={index}
                     component={comp}
                     onClick={() => setSelectedComponentIndex(index)}
-                    updateComponentPosition={updateComponentPosition} // Pass function to update position
+                    updateComponentPosition={updateComponentPosition}
+                    updateComponentSize={updateComponentSize} // Pass function to update position
                 />
             ))}
         </div>

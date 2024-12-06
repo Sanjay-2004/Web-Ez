@@ -36,6 +36,16 @@ const ProjectPage = () => {
         );
     };
 
+    const updateComponentSize = (index, newSize, position) => {
+        setComponents((prev) =>
+            prev.map((comp, i) =>
+                i === index
+                    ? { ...comp, width: newSize.width, height: newSize.height, ...position }
+                    : comp
+            )
+        );
+    }
+
     const handleColorChange = (color, property) => {
         if (selectedComponentIndex !== null) {
             const updatedProperties = { [property]: color };
@@ -88,6 +98,7 @@ const ProjectPage = () => {
                     addComponent={addComponentToCanvas}
                     updateComponentPosition={updateComponentPosition}
                     updateComponent={updateComponent}
+                    updateComponentSize={updateComponentSize}
                 />
                 <Toolbar
                     selectedComponentIndex={selectedComponentIndex}

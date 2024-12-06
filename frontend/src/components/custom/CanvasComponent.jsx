@@ -1,7 +1,7 @@
 import React from 'react';
 import { Rnd } from 'react-rnd';
 
-const CanvasComponent = ({ index, component, onClick, updateComponentPosition, updateComponentProperties }) => {
+const CanvasComponent = ({ index, component, onClick, updateComponentPosition, updateComponentProperties, updateComponentSize }) => {
     const renderComponent = () => {
         const textStyle = {
             color: component.properties.color || "black",
@@ -67,13 +67,33 @@ const CanvasComponent = ({ index, component, onClick, updateComponentPosition, u
                 updateComponentPosition(index, { x: d.x, y: d.y });
             }}
             onResizeStop={(e, direction, ref, delta, position) => {
-                updateComponentPosition(index, { x: position.x, y: position.y, width: ref.offsetWidth, height: ref.offsetHeight });
+                console.log('Resize stopped:', { width: ref.style.width, height: ref.style.height });
+                updateComponentSize(
+                    index,
+                    {
+                        width: parseInt(ref.style.width, 10),
+                        height: parseInt(ref.style.height, 10),
+                    },
+                    position
+                );
             }}
+
             bounds="parent"
             className="border border-dashed border-gray-400 cursor-pointer"
+            enableResizing={{
+                top: true,
+                right: true,
+                bottom: true,
+                left: true,
+                topRight: true,
+                bottomRight: true,
+                bottomLeft: true,
+                topLeft: true,
+            }}
         >
             <div className="w-full h-full">{renderComponent()}</div>
         </Rnd>
+
     );
 };
 
