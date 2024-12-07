@@ -68,7 +68,7 @@ const ProjectPage = () => {
     const generateCode = () => {
         const code = components
             .map((comp) => {
-                const style = `style={{ color: '${comp.properties.color}', fontSize: '${comp.properties.textSize}px', position: 'absolute', left: ${comp.position.x}px, top: ${comp.position.y}px, width: ${comp.width}px, height: ${comp.height}px }}`;
+                const style = `style=" color: ${comp.properties.color}; font-size: ${comp.properties.textSize}px; position: absolute; left: ${comp.position.x}px; top: ${comp.position.y}px; width: ${comp.width}px; height: ${comp.height}px "`;
                 switch (comp.id) {
                     case 'title':
                         return `<h1 ${style}>${comp.properties.text}</h1>`;
@@ -85,7 +85,8 @@ const ProjectPage = () => {
                 }
             })
             .join('\n');
-        alert(`Generated Code:\n\n${code}`);
+
+        console.log(code)
     };
 
     return (
