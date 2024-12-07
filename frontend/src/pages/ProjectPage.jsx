@@ -79,7 +79,7 @@ const ProjectPage = () => {
                     case 'button':
                         return `<button ${style}>${comp.properties.text}</button>`;
                     case 'card':
-                        return `<div ${style} className="card"><h3>${comp.properties.title}</h3><p>${comp.properties.content}</p></div>`;
+                        return `<div ${style} class="card"><h3>${comp.properties.title}</h3><p>${comp.properties.content}</p></div>`;
                     default:
                         return '';
                 }
