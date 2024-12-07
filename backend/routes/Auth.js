@@ -9,7 +9,7 @@ dotenv.config();
 const router = express.Router();
 
 router.post("/sign-up", async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -17,9 +17,9 @@ router.post("/sign-up", async (req, res) => {
     }
 
     const user = await User.findOne({ email });
-    // console.log(user);
+    // //console.log(user);
     if (user) {
-      console.log(user.email);
+      //console.log(user.email);
       return res.status(400).json({ message: "User already exists" });
     }
 
@@ -46,7 +46,7 @@ router.post("/sign-up", async (req, res) => {
 });
 
 router.post("/sign-in", async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ message: "All fields are required" });
@@ -55,7 +55,7 @@ router.post("/sign-in", async (req, res) => {
     email,
   });
   if (!user) {
-    console.log("User does not exist");
+    //console.log("User does not exist");
     return res.status(400).json({ message: "User does not exist" });
   }
 

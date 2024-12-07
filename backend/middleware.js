@@ -4,8 +4,8 @@ import jwt from "jsonwebtoken";
 
 const authMiddleware = (req, res, next) => {
   const JWT_SECERT = process.env.JWT_SECRET;
-  // console.log(JWT_SECERT);
-  console.log(req.body);
+  // //console.log(JWT_SECERT);
+  //console.log(req.body);
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -16,13 +16,13 @@ const authMiddleware = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECERT);
-    console.log(decoded);
+    //console.log(decoded);
     req.userId = decoded.id;
-    console.log(req.userId);
+    //console.log(req.userId);
 
     next();
   } catch (err) {
-    console.log("Error", err);
+    //console.log("Error", err);
     return res.status(403).json({});
   }
 };

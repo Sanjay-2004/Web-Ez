@@ -13,7 +13,9 @@ const Toolbar = ({
     handleTextSizeChange,
     handleTextChange,
     generateCode,
-    coding
+    coding,
+    saveCode,
+    saved
 }) => {
     const selectedComponent = components[selectedComponentIndex];
 
@@ -39,16 +41,16 @@ const Toolbar = ({
                         {["title", "heading", "paragraph", "button", "list"].includes(
                             selectedComponent.id
                         ) && (
-                            <div className="mb-2">
-                                <label className="block text-sm">Text</label>
-                                <input
-                                    type="text"
-                                    value={selectedComponent.properties.text}
-                                    onChange={(e) => handleTextChange(e.target.value)}
-                                    className="w-full p-2 border rounded"
-                                />
-                            </div>
-                        )}
+                                <div className="mb-2">
+                                    <label className="block text-sm">Text</label>
+                                    <input
+                                        type="text"
+                                        value={selectedComponent.properties.text}
+                                        onChange={(e) => handleTextChange(e.target.value)}
+                                        className="w-full p-2 border rounded"
+                                    />
+                                </div>
+                            )}
 
                         {/* Text Color */}
                         <div className="mb-2">
@@ -94,6 +96,13 @@ const Toolbar = ({
                             >
                                 Copy to Clipboard
                             </button>
+                            <button
+                                onClick={saveCode}
+                                className="mt-4 bg-green-500 text-white p-2 rounded"
+                            >
+                                Save Code
+                            </button>
+                            {saved && <p className="text-green-500">Code saved!</p>}
                         </DialogContent>
                     </Dialog>
                 </div>

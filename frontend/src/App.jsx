@@ -14,7 +14,7 @@ const App = () => {
           <Route path="/projects" element={<Projects />} />
           <Route path="/new-project/:id" element={<NewProject />} />
           {/* Need to edit above and below, adding ids */}
-          <Route path="/new-page" element={<ProjectPage />} />
+          <Route path="/new-page/:projectId/:pageId" element={<ProjectPage />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -4,22 +4,36 @@ import { Button } from '@/components/ui/button'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from '@/components/ui/input'
 
 const NewProject = () => {
+    const params = useParams().id;
 
     const navigate = useNavigate();
 
     const [pages, setPages] = useState([])
 
-    const handleNewPage = () => {
-        console.log('New Page')
-        navigate('/new-page')
+    const [pageData, setPageData] = useState({
+        title: '',
+    })
+
+    const handlePageChange = (e) => {
+        setPageData({
+            ...pageData,
+            [e.target.name]: e.target.value
+        })
     }
 
-    const handleNewProject = async (e) => {
+    const handleNewPage = async (e) => {
         e.preventDefault();
-        console.log(projectData)
-        const URI = `${import.meta.env.VITE_BACKEND_URL}/api/users/create-project`;
+        const URI = `${import.meta.env.VITE_BACKEND_URL}/api/project/create-page/${params}`;
         try {
             const res = await axios({
                 url: URI,
@@ -28,19 +42,19 @@ const NewProject = () => {
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },
                 data: {
-                    title: projectData.title,
-                    description: projectData.description
+                    title: pageData.title
                 }
             })
             console.log(res)
-            navigate(`/new-project/${res.data.result}`) // Redirect to new project page
+            navigate(`/new-page/${params}/${res.data.pageId}`)
         } catch (error) {
             console.log(error);
         }
     }
 
-    const params = useParams().id;
-    // console.log("Params: ", params)
+    const openPage = async (pageId) => {
+        navigate(`/new-page/${params}/${pageId}`)
+    }
 
     useEffect(() => {
         const getAllPages = async () => {
@@ -75,9 +89,10 @@ const NewProject = () => {
                 <div className="flex flex-col justify-evenly gap-5 mt-10">
                     {/* <PageCard title='Page 1' description='null' /> */}
                     {pages.length > 0 ? (
-                        pages.map((page, index) => (
-                            <PageCard key={index} title={page.title} description={page.description} />
-                        ))
+                        pages.map((page, index) => {
+                            return (
+                                <PageCard key={index} title={page.title} description={page.description} openPage={() => openPage(page)} />)
+                        })
                     ) : (
                         <p className="text-center text-4xl font-sans text-gray-500">
                             No Pages found. Add a new page to get started.
@@ -85,7 +100,26 @@ const NewProject = () => {
                     )}
                 </div>
                 <div className="flex justify-center mt-5">
-                    <Button onClick={handleNewPage} className='bg-green-500 hover:bg-green-400 text-white font-bold  rounded'>Add New Page</Button>
+                    <Dialog>
+                        <DialogTrigger className='bg-green-500 hover:bg-green-400 text-white  font-bold py-2 px-4 rounded'>Add New Page</DialogTrigger>
+                        {/* Login Form */}
+                        <DialogContent className="bg-gray-500">
+                            <DialogHeader>
+                                <DialogTitle>Add Page Details</DialogTitle>
+                                <form onSubmit={handleNewPage}>
+                                    <Input
+                                        name="title"
+                                        className="bg-gray-300 border-black text-black my-3"
+                                        type="text"
+                                        onChange={handlePageChange}
+                                        placeholder="Page Title"
+                                        required
+                                    />
+                                    <Button type="submit" className='bg-green-500 hover:bg-green-400 text-white  font-bold py-2 px-4 rounded'>Create New Page</Button>
+                                </form>
+                            </DialogHeader>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div >
         </>
