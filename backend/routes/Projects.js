@@ -38,6 +38,20 @@ router.post("/create-page/:projectId", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/:projId", authMiddleware, async (req, res) => {
+  const projId = req.params.projId;
+  const userId = req.userId;
+  const project = await Project.findById(projId);
+  if (!project) {
+    return res.status(404).json({ msg: "Project not found" });
+  }
+  if (project.user.toString() !== userId) {
+    return res.status(401).json({ msg: "Not authorized" });
+  }
+  console.log(project);
+  res.status(200).json(project);
+});
+
 router.get("/pages/:projectId", authMiddleware, async (req, res) => {
   try {
     const userId = req.userId;

@@ -75,7 +75,6 @@ const Toolbar = ({
                             />
                         </div>
                     </div>
-
                     <Dialog>
                         <DialogTrigger asChild>
                             <button
@@ -106,8 +105,37 @@ const Toolbar = ({
                         </DialogContent>
                     </Dialog>
                 </div>
+
             ) : (
-                <p>Select a component to edit</p>
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <button
+                            onClick={generateCode}
+                            className="mt-4 w-full bg-blue-500 text-white p-2 rounded"
+                        >
+                            Generate Code
+                        </button>
+                    </DialogTrigger>
+                    <DialogContent className="bg-white">
+                        <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+                            {coding}
+                        </pre>
+                        {/* Copy to Clipboard Button */}
+                        <button
+                            onClick={copyToClipboard}
+                            className="mt-4 bg-green-500 text-white p-2 rounded"
+                        >
+                            Copy to Clipboard
+                        </button>
+                        <button
+                            onClick={saveCode}
+                            className="mt-4 bg-green-500 text-white p-2 rounded"
+                        >
+                            Save Code
+                        </button>
+                        {saved && <p className="text-green-500">Code saved!</p>}
+                    </DialogContent>
+                </Dialog>
             )}
         </div>
     );

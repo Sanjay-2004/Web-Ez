@@ -75,6 +75,10 @@ const Projects = () => {
             console.log(error);
         }
     }
+
+    const openProject = async (projId) => {
+        navigate(`/new-project/${projId}`)
+    }
     return (
         <>
             <Navbar />
@@ -110,9 +114,13 @@ const Projects = () => {
                 </div>
                 <div className="flex flex-col justify-evenly gap-5 mt-10">
                     {
-                        projects.map((project) => {
-                            return <ProjectCard key={project._id} title={project.title} description={project.description} id={project._id} pages={project.pages.length} />
-                        })
+                        projects.length > 0 ? (
+                            projects.map((project) => {
+                                return <ProjectCard key={project._id} title={project.title} description={project.description} id={project._id} pages={project.pages.length} openProject={() => openProject(project._id)} />
+                            })
+                        ) : (<p className="text-center text-4xl font-sans text-gray-500">
+                            No Projects found. Add a new page to get started.
+                        </p>)
                     }
                 </div>
             </div>

@@ -19,6 +19,7 @@ const NewProject = () => {
     const navigate = useNavigate();
 
     const [pages, setPages] = useState([])
+    const [projName, setProjName] = useState('');
 
     const [pageData, setPageData] = useState({
         title: '',
@@ -75,7 +76,25 @@ const NewProject = () => {
             }
         }
 
+        const getProject = async () => {
+            const URI = `${import.meta.env.VITE_BACKEND_URL}/api/project/${params}`;
+            try {
+                const res = await axios({
+                    url: URI,
+                    method: "get",
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("token"),
+                    }
+                })
+                console.log(res)
+                setProjName(res.data.title)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
         getAllPages();
+        getProject();
     }, [])
 
     return (
@@ -83,8 +102,7 @@ const NewProject = () => {
             <Navbar />
             <div className='p-10'>
                 <div className="flex justify-between">
-                    <h1 className='text-3xl font-medium'>Project Name</h1>
-                    <Button className='bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded'>Save</Button>
+                    <h1 className='text-3xl font-medium'>{projName}</h1>
                 </div>
                 <div className="flex flex-col justify-evenly gap-5 mt-10">
                     {/* <PageCard title='Page 1' description='null' /> */}
