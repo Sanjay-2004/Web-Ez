@@ -1,4 +1,9 @@
 import React from 'react';
+import {
+    Dialog,
+    DialogContent,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
 const Toolbar = ({
     selectedComponentIndex,
@@ -8,8 +13,20 @@ const Toolbar = ({
     handleTextSizeChange,
     handleTextChange,
     generateCode,
+    coding
 }) => {
     const selectedComponent = components[selectedComponentIndex];
+
+    // Function to copy the generated code to clipboard
+    const copyToClipboard = () => {
+        if (coding) {
+            navigator.clipboard.writeText(coding).then(() => {
+                alert("Code copied to clipboard!");
+            }).catch((err) => {
+                alert("Failed to copy code: " + err.message);
+            });
+        }
+    };
 
     return (
         <div className="w-64 p-4 bg-white border-l border-gray-300">
@@ -22,29 +39,12 @@ const Toolbar = ({
                         {["title", "heading", "paragraph", "button", "list"].includes(
                             selectedComponent.id
                         ) && (
-                                <div className="mb-2">
-                                    <label className="block text-sm">Text</label>
-                                    <input
-                                        type="text"
-                                        value={selectedComponent.properties.text}
-                                        onChange={(e) => handleTextChange(e.target.value)}
-                                        className="w-full p-2 border rounded"
-                                    />
-                                </div>
-                            )}
-
-                        {/* List Items */}
-                        {selectedComponent.id === "list" && (
                             <div className="mb-2">
-                                <label className="block text-sm">List Items (comma-separated)</label>
+                                <label className="block text-sm">Text</label>
                                 <input
                                     type="text"
-                                    value={selectedComponent.properties.items.join(", ")}
-                                    onChange={(e) =>
-                                        updateComponent(selectedComponentIndex, {
-                                            items: e.target.value.split(",").map((item) => item.trim()),
-                                        })
-                                    }
+                                    value={selectedComponent.properties.text}
+                                    onChange={(e) => handleTextChange(e.target.value)}
                                     className="w-full p-2 border rounded"
                                 />
                             </div>
@@ -72,46 +72,30 @@ const Toolbar = ({
                                 className="w-full p-2 border rounded"
                             />
                         </div>
-
-                        {/* Background Color */}
-                        {selectedComponent.id === "button" && (
-                            <div className="mb-2">
-                                <label className="block text-sm">Background Color</label>
-                                <input
-                                    type="color"
-                                    value={selectedComponent.properties.backgroundColor || "#000000"}
-                                    onChange={(e) => handleColorChange(e.target.value, "backgroundColor")}
-                                    className="w-full h-10 border rounded p-0"
-                                    style={{
-                                        backgroundColor:
-                                            selectedComponent.properties.backgroundColor || "#000000",
-                                    }}
-                                />
-                            </div>
-                        )}
-
-                        {/* Image URL */}
-                        {selectedComponent.id === "image" && (
-                            <div className="mb-2">
-                                <label className="block text-sm">Image URL</label>
-                                <input
-                                    type="text"
-                                    value={selectedComponent.properties.src || ""}
-                                    onChange={(e) =>
-                                        updateComponent(selectedComponentIndex, { src: e.target.value })
-                                    }
-                                    className="w-full p-2 border rounded"
-                                />
-                            </div>
-                        )}
                     </div>
 
-                    <button
-                        onClick={generateCode}
-                        className="mt-4 w-full bg-blue-500 text-white p-2 rounded"
-                    >
-                        Generate Code
-                    </button>
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <button
+                                onClick={generateCode}
+                                className="mt-4 w-full bg-blue-500 text-white p-2 rounded"
+                            >
+                                Generate Code
+                            </button>
+                        </DialogTrigger>
+                        <DialogContent className="bg-white">
+                            <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+                                {coding}
+                            </pre>
+                            {/* Copy to Clipboard Button */}
+                            <button
+                                onClick={copyToClipboard}
+                                className="mt-4 bg-green-500 text-white p-2 rounded"
+                            >
+                                Copy to Clipboard
+                            </button>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             ) : (
                 <p>Select a component to edit</p>

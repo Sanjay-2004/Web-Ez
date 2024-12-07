@@ -8,6 +8,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 const ProjectPage = () => {
     const [components, setComponents] = useState([]);
     const [selectedComponentIndex, setSelectedComponentIndex] = useState(null);
+    const [coding , setCoding] = useState();
+
 
     const addComponentToCanvas = (component) => {
         setComponents((prev) => [
@@ -65,6 +67,7 @@ const ProjectPage = () => {
         }
     };
 
+
     const generateCode = () => {
         const code = components
             .map((comp) => {
@@ -85,8 +88,20 @@ const ProjectPage = () => {
                 }
             })
             .join('\n');
-
-        console.log(code)
+            let finals = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+${code}
+    
+</body>
+</html>`
+            setCoding(finals);
+        
     };
 
     return (
@@ -109,6 +124,7 @@ const ProjectPage = () => {
                     handleTextSizeChange={handleTextSizeChange}
                     handleTextChange={handleTextChange}
                     generateCode={generateCode}
+                    coding = {coding}
                 />
             </div>
         </DndProvider>
