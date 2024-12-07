@@ -12,7 +12,7 @@ const ProjectPage = () => {
     const addComponentToCanvas = (component) => {
         setComponents((prev) => [
             ...prev,
-            { ...component, properties: { text: 'Edit me!', color: '#000', textSize: 16, backgroundColor: '#000' } },
+            { ...component, properties: { text: 'Edit me!', bootstrapClasses: ' ', textSize: 16, color: '#000000' } },
         ]);
     };
 
@@ -60,26 +60,35 @@ const ProjectPage = () => {
     };
 
     const handleTextChange = (text) => {
+        console.log(text)
         if (selectedComponentIndex !== null) {
             updateComponent(selectedComponentIndex, { text });
         }
     };
 
+    const handleClassChange = (newClass) => {
+        console.log(newClass)
+        if (selectedComponentIndex !== null) {
+            updateComponent(selectedComponentIndex, { bootstrapClasses: newClass });
+        }
+    }
+
     const generateCode = () => {
         const code = components
             .map((comp) => {
-                const style = `style=" color: ${comp.properties.color}; font-size: ${comp.properties.textSize}px; position: absolute; left: ${comp.position.x}px; top: ${comp.position.y}px; width: ${comp.width}px; height: ${comp.height}px "`;
+                const style = `style="position: absolute; left: ${comp.position.x}px; top: ${comp.position.y}px; width: ${comp.width}px; height: ${comp.height}px "`;
+                const classes = comp.properties.bootstrapClasses;
                 switch (comp.id) {
                     case 'title':
-                        return `<h1 ${style}>${comp.properties.text}</h1>`;
+                        return `<h1 class="${classes}" ${style}>${comp.properties.text}</h1>`;
                     case 'heading':
-                        return `<h2 ${style}>${comp.properties.text}</h2>`;
+                        return `<h2 class="${classes}" ${style}>${comp.properties.text}</h2>`;
                     case 'paragraph':
-                        return `<p ${style}>${comp.properties.text}</p>`;
+                        return `<p class="${classes}" ${style}>${comp.properties.text}</p>`;
                     case 'button':
-                        return `<button ${style}>${comp.properties.text}</button>`;
+                        return `<button class="${classes}" ${style}>${comp.properties.text}</button>`;
                     case 'card':
-                        return `<div ${style} class="card"><h3>${comp.properties.title}</h3><p>${comp.properties.content}</p></div>`;
+                        return `<div class="${classes}" ${style} class="card"><h3>${comp.properties.title}</h3><p>${comp.properties.content}</p></div>`;
                     default:
                         return '';
                 }
@@ -108,6 +117,7 @@ const ProjectPage = () => {
                     handleColorChange={handleColorChange}
                     handleTextSizeChange={handleTextSizeChange}
                     handleTextChange={handleTextChange}
+                    handleClassChange={handleClassChange}
                     generateCode={generateCode}
                 />
             </div>

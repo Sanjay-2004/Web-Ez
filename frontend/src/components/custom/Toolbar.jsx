@@ -7,6 +7,7 @@ const Toolbar = ({
     handleColorChange,
     handleTextSizeChange,
     handleTextChange,
+    handleClassChange,
     generateCode,
 }) => {
     const selectedComponent = components[selectedComponentIndex];
@@ -32,23 +33,6 @@ const Toolbar = ({
                                     />
                                 </div>
                             )}
-
-                        {/* List Items */}
-                        {selectedComponent.id === "list" && (
-                            <div className="mb-2">
-                                <label className="block text-sm">List Items (comma-separated)</label>
-                                <input
-                                    type="text"
-                                    value={selectedComponent.properties.items.join(", ")}
-                                    onChange={(e) =>
-                                        updateComponent(selectedComponentIndex, {
-                                            items: e.target.value.split(",").map((item) => item.trim()),
-                                        })
-                                    }
-                                    className="w-full p-2 border rounded"
-                                />
-                            </div>
-                        )}
 
                         {/* Text Color */}
                         <div className="mb-2">
@@ -89,6 +73,22 @@ const Toolbar = ({
                                 />
                             </div>
                         )}
+
+                        {["title", "heading", "paragraph", "button", "list"].includes(
+                            selectedComponent.id
+                        ) && (
+                                <div className="mb-2">
+                                    <label htmlFor="" className="block text-sm">BootStrap Class</label>
+                                    <input type="text"
+                                        value={selectedComponent.properties.bootstrapClasses}
+                                        onChange={(e) => handleClassChange(e.target.value)}
+                                        className="w-full p-2 border rounded"
+                                    />
+                                </div>
+                            )}
+
+
+
 
                         {/* Image URL */}
                         {selectedComponent.id === "image" && (
