@@ -7,21 +7,26 @@ import Project from "../models/project.js";
 const router = express.Router();
 
 router.post("/create-project", authMiddleware, async (req, res) => {
+  // router.post("/create-project", async (req, res) => {
   try {
     const { title, description } = req.body;
+    console.log(req.body);
     const userId = req.userId;
-    const user = await User.findById(userId);
+    const user = await User.find({ userId });
     if (!user) {
+      console.log("User not found");
       return res.status(404).json({ msg: "User not found" });
     }
-    await Project({
+    const result = await Project({
       title,
       description,
       user: userId,
     }).save();
+    console.log(result);
 
-    res.status(201).json({ msg: "Project created" });
+    res.status(201).json({ msg: "Project created", result: result._id });
   } catch (error) {
+    console.log("Error hain\n");
     console.log(error);
     res.status(500).json({ msg: "Server Error" });
   }

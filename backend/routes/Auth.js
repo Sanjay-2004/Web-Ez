@@ -26,13 +26,13 @@ router.post("/sign-up", async (req, res) => {
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    await new User({
+    const result = await new User({
       name,
       email,
       password: hashedPassword,
     }).save();
 
-    const token = sign({ id: email }, process.env.JWT_SECRET);
+    const token = sign({ id: result._id }, process.env.JWT_SECRET);
     res.json({
       token,
       user: {
@@ -55,6 +55,7 @@ router.post("/sign-in", async (req, res) => {
     email,
   });
   if (!user) {
+    console.log("User does not exist");
     return res.status(400).json({ message: "User does not exist" });
   }
 
@@ -63,7 +64,7 @@ router.post("/sign-in", async (req, res) => {
     return res.status(400).json({ message: "Invalid credentials" });
   }
 
-  const token = sign({ id: user.email }, process.env.JWT_SECRET);
+  const token = sign({ id: user._id }, process.env.JWT_SECRET);
   res.json({
     token,
     user: {

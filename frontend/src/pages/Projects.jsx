@@ -11,7 +11,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const Projects = () => {
 
@@ -19,6 +20,8 @@ const Projects = () => {
         title: '',
         description: ''
     })
+
+    const [projects, setProjects] = useState([])
 
     const handleProjectChange = (e) => {
         setProjectData({
@@ -29,9 +32,48 @@ const Projects = () => {
 
     const navigate = useNavigate();
 
-    const handleNewProject = async () => {
-        console.log('New Project')
-        navigate('/new-project') // Redirect to new project page
+    useEffect(() => {
+        const fetchProjects = async () => {
+            const URI = `${import.meta.env.VITE_BACKEND_URL}/api/users/projects`;
+            try {
+                const res = await axios({
+                    url: URI,
+                    method: "get",
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("token"),
+                    }
+                })
+                console.log(res)
+                setProjects(res.data.projects)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        fetchProjects();
+    }, [])
+
+    const handleNewProject = async (e) => {
+        e.preventDefault();
+        console.log(projectData)
+        const URI = `${import.meta.env.VITE_BACKEND_URL}/api/users/create-project`;
+        try {
+            const res = await axios({
+                url: URI,
+                method: "post",
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+                data: {
+                    title: projectData.title,
+                    description: projectData.description
+                }
+            })
+            console.log(res)
+            navigate(`/new-project/${res.data.result}`) // Redirect to new project page
+        } catch (error) {
+            console.log(error);
+        }
     }
     return (
         <>
@@ -44,7 +86,7 @@ const Projects = () => {
                         {/* Login Form */}
                         <DialogContent className="bg-gray-500">
                             <DialogHeader>
-                                <DialogTitle>Login</DialogTitle>
+                                <DialogTitle>Add Project Details</DialogTitle>
                                 <form onSubmit={handleNewProject}>
                                     <Input
                                         name="title"
@@ -67,8 +109,11 @@ const Projects = () => {
 
                 </div>
                 <div className="flex flex-col justify-evenly gap-5 mt-10">
-                    <ProjectCard />
-                    <ProjectCard />
+                    {
+                        projects.map((project) => {
+                            return <ProjectCard key={project._id} title={project.title} description={project.description} id={project._id} pages={project.pages.length} />
+                        })
+                    }
                 </div>
             </div>
         </>
