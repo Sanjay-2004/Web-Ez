@@ -91,16 +91,19 @@ const Home = () => {
 
   return (
     <>
-      <div className='h-screen bg-gray-400 items-center'>
-        <div className='flex gap-3 pt-36 pl-10  p-4 items-center'>
-          <div className="w-2/3">
-            <h1 className='text-[10rem]'>WEB-EZ</h1>
-            <p className='text-5xl mb-5'>No-Code Website Generator</p>
-            <p className='text-3xl'>Simple & Quick</p>
-            <p className='text-3xl'>Generate Websites</p>
+      <div className='h-screen text-white items-center'>
+        <div className='flex max-md:flex-col gap-3 pt-36 pl-10  p-4 items-center'>
+          <div className="w-2/3 max-md:flex max-md:flex-col max-md:items-center bg-gradient-to-br from-black to-transparent p-5 shadow-2xl">
+            <h1 className="font-semibold text-[10rem] max-md:text-7xl">WEB-EZ</h1>
+            <p className="font-semibold text-5xl md:mb-5 max-md:text-center max-md:text-4xl">
+              No-Code Website Generator
+            </p>
+            <p className="font-semibold text-3xl max-md:text-xl">Simple & Quick</p>
+            <p className="font-semibold text-3xl max-md:text-xl">Generate Websites</p>
           </div>
-          <div className="w-1/3 flex items-center justify-center">
-            <div className='w-2/3 border border-black rounded-xl shadow-2xl p-5 flex-col gap-5'>
+
+          <div className="w-1/3 flex  items-center justify-center">
+            <div className='w-2/3 bg-opacity-90 bg-black max-md:w-full border border-black rounded-xl shadow-2xl p-5 flex-col gap-5'>
               {/* Signup Form */}
               <form onSubmit={handleSignupSubmit}>
                 <Input

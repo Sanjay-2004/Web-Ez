@@ -14,7 +14,8 @@ function Canvas({ components, setSelectedComponentIndex, addComponent, updateCom
     return (
         <div
             ref={drop}
-            className="flex-1 h-screen p-2 bg-gray-100 relative"
+            className="flex-1 h-screen p-2 relative"
+            style={{ backgroundImage: 'url("https://pandorafms.com/library/files_repository/1250243163.slerena.white_boxed.jpg' }}
         >
             {components.map((comp, index) => (
                 <CanvasComponent

@@ -43,6 +43,11 @@ const ProjectPage = () => {
         ]);
     };
 
+    const deleteComponentFromCanvas = (index) => {
+        setComponents((prev) => prev.filter((_, i) => i !== index));
+    };
+
+
     const updateComponent = (index, newProperties) => {
         setComponents((prev) =>
             prev.map((comp, i) =>
@@ -174,6 +179,7 @@ ${code}
                     coding={coding}
                     saveCode={saveCode}
                     saved={saved}
+                    deleteComponentFromCanvas={deleteComponentFromCanvas}
                 />
             </div>
         </DndProvider>
